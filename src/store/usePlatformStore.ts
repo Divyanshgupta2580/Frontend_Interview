@@ -44,6 +44,18 @@ interface PlatformStore {
   // Readiness Metrics & Feedback Fixes
   readinessData: ReadinessMetrics;
   toggleFixApplied: (fixId: string) => void;
+  applyInterviewResults: (results: {
+    finalScore: number;
+    overallReadinessDelta: number;
+    summary: string;
+    categoryScores: { category: string; score: number; benchmark: number }[];
+    suggestedFixes: { title: string; location: string; recommendedChange: string }[];
+  }) => void;
+
+  // Mock Interview LiveKit Modal
+  isInterviewModalOpen: boolean;
+  openInterviewModal: () => void;
+  closeInterviewModal: () => void;
 
   // Application Tracker (Kanban)
   applications: JobApplication[];
@@ -178,6 +190,42 @@ export const usePlatformStore = create<PlatformStore>((set, get) => ({
       };
     });
   },
+  applyInterviewResults: (results) => {
+    set((state) => {
+      const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const newScore = results.finalScore;
+
+      // Update or append score history
+      const updatedHistory = [
+        ...state.readinessData.scoreHistory,
+        { date: today, score: newScore }
+      ];
+
+      // Update categories if matching
+      const updatedCategories = state.readinessData.categories.map((cat) => {
+        const matched = results.categoryScores.find((c) =>
+          c.category.toLowerCase().includes(cat.name.toLowerCase()) ||
+          cat.name.toLowerCase().includes(c.category.toLowerCase())
+        );
+        return matched ? { ...cat, score: matched.score } : cat;
+      });
+
+      return {
+        readinessData: {
+          ...state.readinessData,
+          overallScore: newScore,
+          percentile: Math.min(99, Math.max(70, newScore + 4)),
+          scoreHistory: updatedHistory,
+          categories: updatedCategories
+        }
+      };
+    });
+  },
+
+  // Mock Interview LiveKit Modal
+  isInterviewModalOpen: false,
+  openInterviewModal: () => set({ isInterviewModalOpen: true }),
+  closeInterviewModal: () => set({ isInterviewModalOpen: false }),
 
   // Applications Tracker (Kanban)
   applications: INITIAL_APPLICATIONS,

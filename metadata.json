@@ -1,6 +1,6 @@
 {
   "name": "Core Platform Shell",
   "description": "Minimal, monochromatic core platform shell featuring authentication, AI chat with PDF and link ingestion, readiness score analytics, application tracker Kanban, and MSOT admin job board.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": ["microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

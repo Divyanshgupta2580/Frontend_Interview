@@ -15,11 +15,12 @@ import {
   XCircle,
   CheckCircle2,
   ShieldCheck,
-  Zap
+  Zap,
+  Radio
 } from 'lucide-react';
 
 export const ReadinessDashboard: React.FC = () => {
-  const { readinessData, toggleFixApplied, setActiveTab, currentUser } = usePlatformStore();
+  const { readinessData, toggleFixApplied, setActiveTab, currentUser, openInterviewModal } = usePlatformStore();
   const [filterSeverity, setFilterSeverity] = useState<'all' | 'high' | 'medium' | 'low'>('all');
 
   const filteredFixes = readinessData.fixes.filter((fix) => {
@@ -137,13 +138,23 @@ export const ReadinessDashboard: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => setActiveTab('chat')}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-xs self-start sm:self-auto"
-        >
-          <span>Upload Updated Resume</span>
-          <ArrowUpRight className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-3 flex-wrap self-start sm:self-auto">
+          <button
+            onClick={openInterviewModal}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-sm shadow-indigo-600/25"
+          >
+            <Radio className="w-4 h-4 animate-pulse" />
+            <span>Launch LiveKit Mock Interview</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('chat')}
+            className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-2xs"
+          >
+            <span>Upload Resume</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* 2. Primary KPI & Visual Charts Section */}

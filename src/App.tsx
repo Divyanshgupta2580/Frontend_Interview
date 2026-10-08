@@ -6,13 +6,14 @@ import { ChatInterface } from './components/chat/ChatInterface';
 import { ApplicationTracker } from './components/tracker/ApplicationTracker';
 import { MSOTAdminBoard } from './components/admin/MSOTAdminBoard';
 import { AuthModal } from './components/auth/AuthModal';
+import { MockInterviewModal } from './components/interview/MockInterviewModal';
 import { BackgroundCanvas } from './components/layout/BackgroundCanvas';
 
 export default function App() {
   const { activeTab } = usePlatformStore();
 
   return (
-    <div className="relative min-h-screen bg-[#fafafa] text-neutral-900 flex flex-col font-sans selection:bg-neutral-900 selection:text-white">
+    <div className="relative min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col font-sans selection:bg-indigo-600 selection:text-white">
       {/* Dynamic Engineered Background */}
       <BackgroundCanvas />
 
@@ -29,6 +30,9 @@ export default function App() {
 
       {/* Supabase Authentication & Role Switcher Modal */}
       <AuthModal />
+
+      {/* LiveKit Mock Interview Session Modal */}
+      <MockInterviewModal />
 
       {/* Platform Shell Footer */}
       <footer className="relative z-10 border-t border-slate-200 bg-white/80 backdrop-blur-md py-6 mt-16 text-xs text-slate-600">
